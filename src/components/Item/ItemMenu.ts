@@ -172,6 +172,33 @@ export function useItemMenu({
 
         menu
           .addItem((i) => {
+            i.setIcon('lucide-ban')
+              .setTitle(t('Cancel'))
+              .onClick(() => {
+                var title = item.data.titleRaw;
+                if (title.startsWith("- [ ]")) {
+                  title = title.replace(/^- \[ \]/, "- [-]");
+                }
+                else if (title.startsWith("- [-]")) {
+                  title = title.replace(/^- \[-\]/, "")
+                }
+                else {
+                  title = "- [-] " + title
+                }
+
+                stateManager
+                  .updateItemContent(item, title)
+                  .then((item) => {
+                    boardModifiers.updateItem(path, item);
+                  })
+                  .catch((e) => {
+                    stateManager.setError(e);
+                    console.error(e);
+                  });
+
+              });
+          })
+          .addItem((i) => {
             i.setIcon('lucide-copy')
               .setTitle(t('Duplicate card'))
               .onClick(() => boardModifiers.duplicateEntity(path));
