@@ -202,6 +202,7 @@ export default {
   'Add label': 'Add label',
   'Move to top': 'Move to top',
   'Move to bottom': 'Move to bottom',
+  'Important': 'Important',
 
   // components/Lane/LaneForm.tsx
   'Enter list title...': 'Enter list title...',
