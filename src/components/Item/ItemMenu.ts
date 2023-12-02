@@ -28,6 +28,67 @@ interface UseItemMenuParams {
   stateManager: StateManager;
 }
 
+function add_checkbox_context_menu_item(item, stateManager, boardModifiers, path, menu_item, title, title_icon, checkobox_code) {
+  `
+  The function adds new menu to card's context.
+  The menu is used to add extra icons to card's title. Examples could be found here https://github.com/kepano/obsidian-minimal#alternate-checkboxes
+  Example of usage: 
+    menu
+    .addItem((i) => {
+      add_checkbox_context_menu_item(item, stateManager, boardModifiers, path, i, "Cancel", "lucide-ban", "-")
+    })
+
+  title - name of the menu
+  title_icon - lucide icon. See here - https://lucide.dev/icons/
+  checkobox_code - a symbol that is used in square brackets
+    for 'cancel' it is '-' - '- [-]'
+    for 'question' it is '?' - '- [?]'
+
+  `
+  // e.g. - lucide-flame
+  menu_item.setIcon(title_icon)
+    .setTitle(t(title))
+    .onClick(() => {
+      const pattern =  new RegExp(/^- \[.\]/)
+
+      var title = item.data.titleRaw;
+      // Replace empty checkbox with the given checkbox_code
+      if (title.startsWith("- [ ]")) {
+        console.log("- [ ]");
+        title = title.replace(/^- \[ \]/, `- [${checkobox_code}] `);
+      }
+      // If there the non-empty checkbox already exists.
+      else if (pattern.test(title)) {
+        console.log("- [.]");
+        // If the existed checkbox equals the one user want to set, then remove the checkbox.
+        if (title.startsWith(`- [${checkobox_code}]`)) {
+          title = title.replace(/^- \[.\]/, "");
+        }
+        // If the existed checkbox NOT equals the one user want to set,
+        // then replace the existed checkbox with new one.
+        else {
+          title = title.replace(/^- \[.\]/, `- [${checkobox_code}] `)
+        }
+      }
+      // If there is no checkbox, set new one.
+      else {
+        console.log("else");
+        title = `- [${checkobox_code}] ` + title
+      }
+
+      stateManager
+        .updateItemContent(item, title)
+        .then((item) => {
+          boardModifiers.updateItem(path, item);
+        })
+        .catch((e) => {
+          stateManager.setError(e);
+          console.error(e);
+        });
+
+    });
+  }
+
 export function useItemMenu({
   setIsEditing,
   item,
@@ -172,33 +233,13 @@ export function useItemMenu({
 
         menu
           .addItem((i) => {
-            i.setIcon('lucide-ban')
-              .setTitle(t('Cancel'))
-              .onClick(() => {
-                var title = item.data.titleRaw;
-                if (title.startsWith("- [ ]")) {
-                  title = title.replace(/^- \[ \]/, "- [-]");
-                }
-                else if (title.startsWith("- [-]")) {
-                  title = title.replace(/^- \[-\]/, "")
-                }
-                else {
-                  title = "- [-] " + title
-                }
-
-                stateManager
-                  .updateItemContent(item, title)
-                  .then((item) => {
-                    boardModifiers.updateItem(path, item);
-                  })
-                  .catch((e) => {
-                    stateManager.setError(e);
-                    console.error(e);
-                  });
-
-              });
+            add_checkbox_context_menu_item(item, stateManager, boardModifiers, path, i, "Cancel", "lucide-ban", "-")
           })
           .addItem((i) => {
+            add_checkbox_context_menu_item(item, stateManager, boardModifiers, path, i, "Important", "lucide-flame", "f")
+          })
+         .addSeparator()
+         .addItem((i) => {
             i.setIcon('lucide-copy')
               .setTitle(t('Duplicate card'))
               .onClick(() => boardModifiers.duplicateEntity(path));
