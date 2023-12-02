@@ -338,6 +338,7 @@ export function getItemClassModifiers(item: Item) {
 
   if (item.data.isComplete) {
     classModifiers.push('is-complete');
+    classModifiers.push('kanban-plugin__text_faint');
   }
 
   for (const tag of item.data.metadata.tags) {
