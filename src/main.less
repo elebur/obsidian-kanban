@@ -1539,3 +1539,17 @@ body:not(.native-scrollbars)
 .kanban-plugin__text_faint {
   color: var(--text-faint);
 }
+
+.kanban-plugin__text_faint a.internal-link {
+  color: hsl(201deg 3.8% 46.27%);
+  text-decoration: underline;
+}
+
+li[data-task="-"].task-list-item.is-checked a.internal-link {
+  color: hsl(201deg 3.8% 46.27%);
+  text-decoration: underline;
+}
+
+li[data-task="f"].task-list-item.is-checked {
+  font-weight: 700;
+}
