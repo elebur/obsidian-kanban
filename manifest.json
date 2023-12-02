@@ -1,10 +1,10 @@
 {
-  "id": "obsidian-kanban",
-  "name": "Kanban",
-  "version": "1.5.3",
+  "id": "obsidian-kanban-elebur",
+  "name": "Kanban-elebur",
+  "version": "1.5.3.1",
   "minAppVersion": "1.0.0",
-  "description": "Create markdown-backed Kanban boards in Obsidian.",
-  "author": "mgmeyers",
-  "authorUrl": "https://github.com/mgmeyers/obsidian-kanban",
+  "description": "Create markdown-backed Kanban boards in Obsidian. Original repo - https://github.com/mgmeyers/obsidian-kanban",
+  "author": "elebur",
+  "authorUrl": "https://github.com/elebur/obsidian-kanban",
   "isDesktopOnly": false
 }
